@@ -19,7 +19,7 @@ connectDB();
 
 // Sử dụng các routes
 app.use("/api/auth", authRoutes);
-app.use("/api/users", userRoutes);
+app.use("/api/user", userRoutes); // sửa lại từ /api/users
 app.use("/api/products", productRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/orders", orderRoutes);

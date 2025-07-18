@@ -4,7 +4,21 @@ const router = express.Router();
 
 // Xem danh sách sản phẩm, tìm kiếm, lọc
 router.get("/", async (req, res) => {
-  const products = await Product.find();
+  const { search, category, color, size } = req.query;
+  let query = {};
+  if (search) {
+    query.name = { $regex: search, $options: "i" };
+  }
+  if (category) {
+    query.category = category;
+  }
+  if (color) {
+    query["specs.title"] = { $regex: color, $options: "i" };
+  }
+  if (size) {
+    query["specs.sizes"] = size;
+  }
+  const products = await Product.find(query);
   res.json(products);
 });
 
@@ -21,8 +35,13 @@ router.post("/", async (req, res) => {
 
 // Xem chi tiết sản phẩm
 router.get("/:id", async (req, res) => {
-  // ... Xử lý lấy chi tiết sản phẩm ...
-  res.json({});
+  try {
+    const product = await Product.findById(req.params.id);
+    if (!product) return res.status(404).json({ message: "Không tìm thấy sản phẩm" });
+    res.json(product);
+  } catch (err) {
+    res.status(400).json({ message: "Lỗi truy vấn", error: err.message });
+  }
 });
 
 export default router;

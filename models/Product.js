@@ -6,6 +6,7 @@ const specSchema = new Schema({
   title:     String, // màu
   quantity:  { type: Number, default: 0 },
   imgList:   [String],
+  sizes:     [String], // Bổ sung trường sizes
 }, { _id: false });
 
 const productSchema = new Schema({
